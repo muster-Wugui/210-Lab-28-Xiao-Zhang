@@ -1,7 +1,9 @@
+// COMSC-210 | Lab 28 | Xiao Zhang
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <list>
+#include <set>
 #include "Goat.h"
 #include <algorithm>
 using namespace std;
@@ -14,14 +16,14 @@ void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
 
-void find_oldest(list<Goat> &trip);
-void sort_age(list<Goat> &trip);
-void count_color(list<Goat> &trip, string color);
-void find_youngest(list<Goat> &trip);
-void sort_name(list<Goat> &trip);
-void uniquecolors(list<Goat> &trip);
-void count_age(list<Goat> &trip, int age);
-void clear(list<Goat> &trip);
+void find_oldest(list<Goat> &trip); //A function to find and display the oldest goat.
+void sort_age(list<Goat> &trip); // Sorts the goats by age
+void count_color(list<Goat> &trip, string color); //Counts goats with a specific color
+void find_youngest(list<Goat> &trip); // Finds and displays the youngest goat
+void sort_name(list<Goat> &trip); // Sorts the goats by name
+void uniquecolors(list<Goat> &trip); //Lists all the unique colors
+void count_age(list<Goat> &trip, int age); //Counts goats above a certain age
+void clear(list<Goat> &trip); //Clears the list
 
 int main() {
     srand(time(0));
@@ -184,39 +186,70 @@ int select_goat(list<Goat> trp) {
 }
 
 void find_oldest(list<Goat> &trip) {
-    if (trip.empty()) {
+    if (trip.empty()) { // Check if the list is empty
         cout << "No goats in the trip.\n";
         return;
     }
-    auto oldest = max_element(trip.begin(), trip.end(), [](Goat &a, Goat &b) {
+    auto oldest = max_element(trip.begin(), trip.end(), [](Goat &a, Goat &b) { // Find the oldest goat using max_element with a custom comparator
         return a.get_age() < b.get_age();
     });
     cout << "Oldest goat: " << oldest->get_name() << " (" << oldest->get_age() << " years, " << oldest->get_color() << ")\n";
 }
 
-void sort_age(list<Goat> &trip) {
+void sort_age(list<Goat> &trip) { // Sorts goats in the list by age in ascending order
     trip.sort([](const Goat &a, const Goat &b) {
-        return a.get_age() < b.get_age();
+        return a.get_age() < b.get_age(); // I use sort with a lambda function to sort goats by age
     });
     cout << "Goats sorted by age.\n";
+    display_trip(trip);
 }
 
 void count_color(list<Goat> &trip, string color) {
-    int count = count_if(trip.begin(), trip.end(), [&color](const Goat &g) {
+    int count = count_if(trip.begin(), trip.end(), [&color](const Goat &g) {  // Use count_if to count goats with the specified color
         return g.get_color() == color;
     });
     cout << "Number of goats with color " << color << ": " << count << endl;
 }
 
 void find_youngest(list<Goat> &trip) {
-    if (trip.empty()) {
+    if (trip.empty()) { // Check if the list is empty
         cout << "No goats in the trip.\n";
         return;
     }
-    auto youngest = min_element(trip.begin(), trip.end(), [](Goat &a, Goat &b) {
+    auto youngest = min_element(trip.begin(), trip.end(), [](Goat &a, Goat &b) { // Find the youngest goat using min_element with a custom comparator
         return a.get_age() < b.get_age();
     });
     cout << "Youngest goat: " << youngest->get_name() << " (" << youngest->get_age() << " years, " << youngest->get_color() << ")\n";
 }
 
+void sort_name(list<Goat> &trip) { // Sorts goats in the list by name in alphabetical order
+    trip.sort([](const Goat &a, const Goat &b) { // Use sort with a lambda function to sort goats by name
+        return a.get_name() < b.get_name();
+    });
+    cout << "Goats sorted by name.\n";
+    display_trip(trip);
+}
 
+void uniquecolors(list<Goat> &trip) {// Lists all unique colors of goats in the trip
+    set<string> colors; //I used the property of the set which don't contain repeat elements
+    for (const auto &goat : trip) {
+        colors.insert(goat.get_color()); // Add each goat's color to the set
+    }
+    cout << "Unique colors: ";
+    for (const auto &color : colors) { //Print out the unique colors found
+        cout << color << " ";
+    }
+    cout << endl;
+}
+
+void count_age(list<Goat> &trip, int age) { // Counts and displays the number of goats older than a specified age
+    int count = count_if(trip.begin(), trip.end(), [&age](const Goat &g) { // Use count_if to count goats older than the specified age
+        return g.get_age() > age;
+    });
+    cout << "Number of goats older than " << age << ": " << count << endl;
+}
+
+void clear(list<Goat> &trip) {
+    trip.clear(); // Remove all goats from the list
+    cout << "All goats removed. Trip size: " << trip.size() << endl;
+}
