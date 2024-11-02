@@ -77,6 +77,7 @@ int main() {
                     sort_age(trip);
                     break;
                 case 6: {
+                    cout<<"Counting the specific color.\n";
                     string color;
                     cout << "Enter color to count: ";
                     cin >> color;
@@ -96,6 +97,7 @@ int main() {
                     uniquecolors(trip);
                     break;
                 case 10: {
+                    cout<<"Counting the GOATS above a certain age.\n";
                     int age;
                     cout << "Enter minimum age: ";
                     cin >> age;
@@ -180,3 +182,41 @@ int select_goat(list<Goat> trp) {
     }
     return input;
 }
+
+void find_oldest(list<Goat> &trip) {
+    if (trip.empty()) {
+        cout << "No goats in the trip.\n";
+        return;
+    }
+    auto oldest = max_element(trip.begin(), trip.end(), [](Goat &a, Goat &b) {
+        return a.get_age() < b.get_age();
+    });
+    cout << "Oldest goat: " << oldest->get_name() << " (" << oldest->get_age() << " years, " << oldest->get_color() << ")\n";
+}
+
+void sort_age(list<Goat> &trip) {
+    trip.sort([](const Goat &a, const Goat &b) {
+        return a.get_age() < b.get_age();
+    });
+    cout << "Goats sorted by age.\n";
+}
+
+void count_color(list<Goat> &trip, string color) {
+    int count = count_if(trip.begin(), trip.end(), [&color](const Goat &g) {
+        return g.get_color() == color;
+    });
+    cout << "Number of goats with color " << color << ": " << count << endl;
+}
+
+void find_youngest(list<Goat> &trip) {
+    if (trip.empty()) {
+        cout << "No goats in the trip.\n";
+        return;
+    }
+    auto youngest = min_element(trip.begin(), trip.end(), [](Goat &a, Goat &b) {
+        return a.get_age() < b.get_age();
+    });
+    cout << "Youngest goat: " << youngest->get_name() << " (" << youngest->get_age() << " years, " << youngest->get_color() << ")\n";
+}
+
+
