@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <list>
 #include "Goat.h"
+#include <algorithm>
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25;
@@ -12,6 +13,15 @@ void delete_goat(list<Goat> &trip);
 void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
+
+void find_oldest(list<Goat> &trip);
+void sort_age(list<Goat> &trip);
+void count_color(list<Goat> &trip, string color);
+void find_youngest(list<Goat> &trip);
+void sort_name(list<Goat> &trip);
+void uniquecolors(list<Goat> &trip);
+void count_age(list<Goat> &trip, int age);
+void clear(list<Goat> &trip);
 
 int main() {
     srand(time(0));
@@ -43,27 +53,62 @@ int main() {
     }
     
     // Goat Manager 3001 Engine
-    int sel = main_menu();
-    while (sel != 4) {
-        switch (sel) {
-            case 1:
-                cout << "Adding a goat.\n";
-                add_goat(trip, names, colors);
-                break;
-            case 2:
-                cout << "Removing a goat.\n";
-                delete_goat(trip);
-                break;
-            case 3:
-                cout << "Displaying goat data.\n";
-                display_trip(trip);
-                break;
-            default:
-                cout << "Invalid selection.\n";
-                break;
+    int choice = main_menu();
+        while (choice != 12) {
+            switch (choice) {
+                case 1:
+                    cout << "Adding a goat.\n";
+                    add_goat(trip, names, colors);
+                    break;
+                case 2:
+                    cout << "Removing a goat.\n";
+                    delete_goat(trip);
+                    break;
+                case 3:
+                    cout << "Displaying goat data.\n";
+                    display_trip(trip);
+                    break;
+                case 4:
+                    cout<<"Finding the oldest GOAT\n";
+                    find_oldest(trip);
+                    break;
+                case 5:
+                    cout<<"Sorting the GOATs by age\n";
+                    sort_age(trip);
+                    break;
+                case 6: {
+                    string color;
+                    cout << "Enter color to count: ";
+                    cin >> color;
+                    count_color(trip, color);
+                    break;
+                }
+                case 7:
+                    cout<<"Finding the youngest GOAT\n";
+                    find_youngest(trip);
+                    break;
+                case 8:
+                    cout<<"Sorting the GOATs by name\n";
+                    sort_name(trip);
+                    break;
+                case 9:
+                    cout<<"listing the unique colors in GOAT\n";
+                    uniquecolors(trip);
+                    break;
+                case 10: {
+                    int age;
+                    cout << "Enter minimum age: ";
+                    cin >> age;
+                    count_age(trip, age);
+                    break;
+                }
+                case 11:
+                    cout<<"Erasing all the GOATs\n";
+                    clear(trip);
+                    break;
+            }
+            choice = main_menu();
         }
-        sel = main_menu();
-    }
     
 
     return 0;
@@ -74,11 +119,20 @@ int main_menu() {
     cout << "[1] Add a goat\n";
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
-    cout << "[4] Quit\n";
+    cout << "[4] Find oldest goat\n";
+    cout << "[5] Sort by age\n";
+    cout << "[6] Count by color\n";
+    cout << "[7] Show youngest goat\n";
+    cout << "[8] Sort by name\n";
+    cout << "[9] List unique colors\n";
+    cout << "[10] Count age above\n";
+    cout << "[11] Clear trip\n";
+    cout << "[12] Quit\n";
     cout << "Choice --> ";
+    
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 4) {
+    while (choice < 1 || choice > 12) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
